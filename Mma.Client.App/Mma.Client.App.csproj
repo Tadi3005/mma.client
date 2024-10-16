@@ -21,9 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ai.Csharp.Stub.Domains\Ai.Csharp.Stub.Domains.csproj" />
-    <ProjectReference Include="..\Ai.Csharp.Stub.Infrastructures\Ai.Csharp.Stub.Infrastructures.csproj" />
-    <ProjectReference Include="..\Ai.Csharp.Stub.Presentations\Ai.Csharp.Stub.Presentations.csproj" />
-    <ProjectReference Include="..\Ai.Csharp.Stub.Views\Ai.Csharp.Stub.Views.csproj" />
+    <ProjectReference Include="..\Mma.Client.Domains\Mma.Client.Domains.csproj" />
+    <ProjectReference Include="..\Mma.Client.Infrastructures\Mma.Client.Infrastructures.csproj" />
+    <ProjectReference Include="..\Mma.Client.Presentations\Mma.Client.Presentations.csproj" />
+    <ProjectReference Include="..\Mma.Client.Views\Mma.Client.Views.csproj" />
   </ItemGroup>
 </Project>

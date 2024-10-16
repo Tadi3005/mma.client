@@ -1,4 +1,4 @@
-﻿namespace Ai.Csharp.Stub.Domains;
+﻿namespace Mma.Client.Domains;
 
 //TODO: Supprime-moi
 public class Entity

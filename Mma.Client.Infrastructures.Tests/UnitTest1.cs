@@ -1,4 +1,4 @@
-namespace Ai.Csharp.Stub.Presentations.Tests;
+namespace Mma.Client.Infrastructures.Tests;
 
 public class Tests
 {

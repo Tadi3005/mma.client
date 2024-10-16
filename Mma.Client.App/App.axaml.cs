@@ -1,10 +1,10 @@
-using Ai.Csharp.Stub.Views;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Mma.Client.Views;
 using Serilog;
 
-namespace Ai.Csharp.Stub.App;
+namespace Mma.Client.App;
 
 public partial class App : Application
 {
@@ -19,7 +19,10 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            _mainWindow = new MainWindow() { Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("log.txt").CreateLogger() };
+            _mainWindow = new MainWindow()
+            {
+                Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("log.txt").CreateLogger()
+            };
             _mainWindow.Loaded += (obj, evt) => _mainWindow.DoSomething();
             desktop.MainWindow = _mainWindow;
 

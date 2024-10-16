@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Serilog;
 
-namespace Ai.Csharp.Stub.Views;
+namespace Mma.Client.Views;
 
 public partial class MainWindow : Window
 {
@@ -14,6 +14,6 @@ public partial class MainWindow : Window
 
     public void DoSomething()
     {
-        Logger.Information("Hello de la vue");
+        Logger?.Information("Hello de la vue");
     }
 }

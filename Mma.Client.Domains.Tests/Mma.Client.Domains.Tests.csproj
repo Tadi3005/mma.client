@@ -29,8 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ai.Csharp.Stub.Domains\Ai.Csharp.Stub.Domains.csproj" />
-    <ProjectReference Include="..\Ai.Csharp.Stub.Infrastructures\Ai.Csharp.Stub.Infrastructures.csproj" />
+    <ProjectReference Include="..\Mma.Client.Domains\Mma.Client.Domains.csproj" />
   </ItemGroup>
 
 </Project>

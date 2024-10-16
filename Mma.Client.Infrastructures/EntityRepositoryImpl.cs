@@ -1,4 +1,4 @@
-﻿namespace Ai.Csharp.Stub.Infrastructures;
+﻿namespace Mma.Client.Infrastructures;
 
 using Serilog;
 

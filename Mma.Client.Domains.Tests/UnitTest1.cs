@@ -1,4 +1,4 @@
-namespace Ai.Csharp.Stub.Domains.Tests;
+namespace Mma.Client.Domains.Tests;
 
 public class Tests
 {

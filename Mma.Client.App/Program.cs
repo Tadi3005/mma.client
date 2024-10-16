@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace Ai.Csharp.Stub.App;
+namespace Mma.Client.App;
 
 internal class Program
 {
