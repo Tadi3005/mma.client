@@ -2,8 +2,40 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:presentations="clr-namespace:Mma.Client.Presentations;assembly=Mma.Client.Presentations"
+        xmlns:dummy="clr-namespace:Mma.Client.Presentations.Dummy;assembly=Mma.Client.Presentations"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Mma.Client.Views.MainWindow"
-        Title="Stub UE36-AI">
-    Bienvenue dans ce stub pour l'AI
+        x:DataType="presentations:IMainViewModel"
+        Title="Mma.Client">
+    <Design.DataContext>
+        <dummy:DummyMainViewModel />
+    </Design.DataContext>
+    <Grid RowDefinitions="Auto, *" ColumnDefinitions="*,Auto">
+        
+        <TabControl Grid.Row="0" Grid.Column="0">
+            <TabItem Header="Occupation actuelle">
+                <Grid RowDefinitions="20, Auto, 10, Auto, 10, Auto">
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Rectangle Fill="{Binding IStateRoomViewModel.ColorStateRoom}" Width="10" Height="50" Margin="0, 0, 10, 0" d:DesignWidth="10" d:DesignHeight="50" Stroke="Black" StrokeThickness="1"></Rectangle>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding IStateRoomViewModel.RoomName}" FontSize="24"></TextBlock>
+                            <TextBlock Text="{Binding IStateRoomViewModel.TimeCurentSlot}"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3">
+                        <TextBlock Text="{Binding IStateRoomViewModel.NameActualSlot}" Foreground="{Binding IStateRoomViewModel.ColorStateRoom}"></TextBlock>
+                        <TextBlock Text="{Binding IStateRoomViewModel.TimeActualEvent}" Foreground="{Binding IStateRoomViewModel.ColorStateRoom}"></TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="5">
+                        <TextBlock Text="Prochaine Occupation"></TextBlock>
+                        <TextBlock Text="{Binding IStateRoomViewModel.TimeNextEvent}"></TextBlock>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        
+    </Grid>
 </Window>

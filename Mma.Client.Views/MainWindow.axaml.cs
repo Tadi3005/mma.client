@@ -9,11 +9,4 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
     }
-
-    public ILogger? Logger { get; init; }
-
-    public void DoSomething()
-    {
-        Logger?.Information("Hello de la vue");
-    }
 }

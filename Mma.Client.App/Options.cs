@@ -4,7 +4,9 @@ namespace Mma.Client.App;
 
 public class Options
 {
-    //TODO: déclarer des arguments reçus au lancement
-    [Option('a', "arg", Required = true, HelpText = "Un argument quelconque.")]
-    public string Arg { get; set; } = string.Empty;
+    [Option('d', "db", Required = true, HelpText = "Database connection string")]
+    public string ConnectionString { get; set; } = string.Empty;
+
+    [Option('r', "room", Required = true, HelpText = "Room id")]
+    public string RoomId { get; set; }
 }

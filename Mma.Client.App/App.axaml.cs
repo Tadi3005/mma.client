@@ -3,6 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using CommandLine;
+using Mma.Client.Infrastructures.Sql;
+using Mma.Client.Presentations;
 using Mma.Client.Views;
 using Serilog;
 
@@ -36,9 +38,16 @@ public partial class App : Application
                 .WithParsed(options =>
                 {
                     Logger.Information("Launching app");
-                    _mainWindow = new MainWindow();
+                    var factory = new SqlDataStorageFactory();
+                    var service = new SqlService(factory.CreateDataStorage());
+                    var room = service.FindRoomById(options.RoomId);
+                    var stateRoomViewModel = new StateRoomViewModel(room);
+                    var mainViewModel = new MainViewModel(stateRoomViewModel, service);
+                    _mainWindow = new MainWindow
+                    {
+                        DataContext = mainViewModel
+                    };
                     desktop.MainWindow = _mainWindow;
-                    _mainWindow.DoSomething();
                 });
 
         }
