@@ -3,24 +3,26 @@ using Mma.Client.Domains;
 
 namespace Mma.Client.Presentations
 {
-    public partial class StateRoomViewModel(Room room) : ObservableObject, IStateRoomViewModel
+    public partial class StateRoomViewModel(RoomState roomState) : ObservableObject, IStateRoomViewModel
     {
         [ObservableProperty]
-        private string _colorStateRoom = "Green";
+        private string _colorStateRoom = roomState.IsActualAvailable ? "#00FF00" : "#FF0000";
 
         [ObservableProperty]
-        private string _roomName = $"{room.Id} - {room.Name}";
+        private string _roomName = $"{roomState.IdRoom} - {roomState.NameRoom}";
 
         [ObservableProperty]
-        private string _timeCurentSlot = "12:00";
+        private string _timeCurentSlot = $"{roomState.TimeCurrentSlot.ToString("dddd dd MMMM")} - créneau de {roomState.TimeCurrentSlot.ToString("HH:mm")}";
 
         [ObservableProperty]
-        private string _nameActualSlot = "Slot A";
+        private string _nameActualReservation = roomState.ActualReservation == Reservation.Empty ? "Aucun événement en cours" : roomState.ActualReservation.Summary;
 
         [ObservableProperty]
-        private string _timeActualEvent = "12:30";
+        public string _timeActualReservation = roomState.ActualReservation == Reservation.Empty ? string.Empty
+            : $"de roomState.ActualReservation.Start.ToString(HH:mm) à roomState.ActualReservation.End.ToString(HH:mm)";
 
         [ObservableProperty]
-        private string _timeNextEvent = "13:00";
+        public string _timeNextReservation = roomState.NextReservation == Reservation.Empty ? "Disponnible jusqu'à la fin de la journée" :
+            $"de {roomState.NextReservation.Start.ToString("HH:mm")} à {roomState.NextReservation.End.ToString("HH:mm")}";
     }
 }

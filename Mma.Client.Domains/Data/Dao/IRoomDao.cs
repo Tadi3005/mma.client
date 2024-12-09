@@ -1,6 +1,6 @@
-namespace Mma.Client.Domains.Data;
+namespace Mma.Client.Domains.Data.Dao;
 
 public interface IRoomDao
 {
-    Room FindRoomById(string id);
+    Room FindById(string roomId);
 }

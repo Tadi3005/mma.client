@@ -25,13 +25,13 @@
                     </StackPanel>
 
                     <StackPanel Grid.Row="3">
-                        <TextBlock Text="{Binding IStateRoomViewModel.NameActualSlot}" Foreground="{Binding IStateRoomViewModel.ColorStateRoom}"></TextBlock>
-                        <TextBlock Text="{Binding IStateRoomViewModel.TimeActualEvent}" Foreground="{Binding IStateRoomViewModel.ColorStateRoom}"></TextBlock>
+                        <TextBlock Text="{Binding IStateRoomViewModel.NameActualReservation}" Foreground="{Binding IStateRoomViewModel.ColorStateRoom}"></TextBlock>
+                        <TextBlock Text="{Binding IStateRoomViewModel.TimeActualReservation}" Foreground="{Binding IStateRoomViewModel.ColorStateRoom}"></TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Row="5">
                         <TextBlock Text="Prochaine Occupation"></TextBlock>
-                        <TextBlock Text="{Binding IStateRoomViewModel.TimeNextEvent}"></TextBlock>
+                        <TextBlock Text="{Binding IStateRoomViewModel.TimeNextReservation}"></TextBlock>
                     </StackPanel>
                 </Grid>
             </TabItem>

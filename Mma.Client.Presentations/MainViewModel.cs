@@ -4,7 +4,7 @@ namespace Mma.Client.Presentations;
 
 public class MainViewModel : IMainViewModel
 {
-    public MainViewModel(IStateRoomViewModel stateRoomViewModel, IDataService dataService)
+    public MainViewModel(IStateRoomViewModel stateRoomViewModel)
     {
         IStateRoomViewModel = stateRoomViewModel;
     }

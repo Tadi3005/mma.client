@@ -8,5 +8,5 @@ public class Options
     public string ConnectionString { get; set; } = string.Empty;
 
     [Option('r', "room", Required = true, HelpText = "Room id")]
-    public string RoomId { get; set; }
+    public string RoomId { get; set; } = string.Empty;
 }
