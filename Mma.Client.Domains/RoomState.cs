@@ -1,6 +1,6 @@
 namespace Mma.Client.Domains;
 
-public class RoomState(Room room, IList<Reservation> reservations)
+public record RoomState(Room room, IList<Reservation> reservations)
 {
     public string IdRoom = room.Id;
 

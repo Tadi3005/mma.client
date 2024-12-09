@@ -17,21 +17,21 @@
             <TabItem Header="Occupation actuelle">
                 <Grid RowDefinitions="20, Auto, 10, Auto, 10, Auto">
                     <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Rectangle Fill="{Binding IStateRoomViewModel.ColorStateRoom}" Width="10" Height="50" Margin="0, 0, 10, 0" d:DesignWidth="10" d:DesignHeight="50" Stroke="Black" StrokeThickness="1"></Rectangle>
+                        <Rectangle Fill="{Binding StateRoomViewModel.ColorStateRoom}" Width="10" Height="50" Margin="0, 0, 10, 0" d:DesignWidth="10" d:DesignHeight="50" Stroke="Black" StrokeThickness="1"></Rectangle>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="{Binding IStateRoomViewModel.RoomName}" FontSize="24"></TextBlock>
-                            <TextBlock Text="{Binding IStateRoomViewModel.TimeCurentSlot}"></TextBlock>
+                            <TextBlock Text="{Binding StateRoomViewModel.RoomName}" FontSize="24"></TextBlock>
+                            <TextBlock Text="{Binding StateRoomViewModel.TimeCurentSlot}"></TextBlock>
                         </StackPanel>
                     </StackPanel>
 
                     <StackPanel Grid.Row="3">
-                        <TextBlock Text="{Binding IStateRoomViewModel.NameActualReservation}" Foreground="{Binding IStateRoomViewModel.ColorStateRoom}"></TextBlock>
-                        <TextBlock Text="{Binding IStateRoomViewModel.TimeActualReservation}" Foreground="{Binding IStateRoomViewModel.ColorStateRoom}"></TextBlock>
+                        <TextBlock Text="{Binding StateRoomViewModel.NameActualReservation}" Foreground="{Binding StateRoomViewModel.ColorStateRoom}"></TextBlock>
+                        <TextBlock Text="{Binding StateRoomViewModel.TimeActualReservation}" Foreground="{Binding StateRoomViewModel.ColorStateRoom}"></TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Row="5">
                         <TextBlock Text="Prochaine Occupation"></TextBlock>
-                        <TextBlock Text="{Binding IStateRoomViewModel.TimeNextReservation}"></TextBlock>
+                        <TextBlock Text="{Binding StateRoomViewModel.TimeNextReservation}"></TextBlock>
                     </StackPanel>
                 </Grid>
             </TabItem>

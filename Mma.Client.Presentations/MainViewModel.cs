@@ -1,13 +1,17 @@
-using Mma.Client.Domains.Data;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Mma.Client.Domains;
 
 namespace Mma.Client.Presentations;
 
-public class MainViewModel : IMainViewModel
+public partial class MainViewModel : ObservableObject, IMainViewModel
 {
     public MainViewModel(IStateRoomViewModel stateRoomViewModel)
     {
-        IStateRoomViewModel = stateRoomViewModel;
+        _stateRoomViewModel = stateRoomViewModel;
     }
 
-    public IStateRoomViewModel IStateRoomViewModel { get; }
+    [ObservableProperty]
+    private IStateRoomViewModel _stateRoomViewModel;
+
+    public void Refresh(RoomState roomState) => StateRoomViewModel = new StateRoomViewModel(roomState);
 }

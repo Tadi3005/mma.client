@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Timers;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -22,6 +23,7 @@ public class App : Application
         .WriteTo.File("log.txt")
         .CreateLogger();
     private MainWindow? _mainWindow;
+    private readonly Timer _refreshTimer = new(TimeSpan.FromMinutes(5).TotalMilliseconds);
 
     public override void Initialize()
     {
@@ -58,7 +60,9 @@ public class App : Application
                         DataContext = mainViewModel
                     };
                     desktop.MainWindow = _mainWindow;
-                    connection.Dispose();
+
+                    _refreshTimer.Elapsed += (sender, e) => mainViewModel.Refresh(new RoomState(room, service.FindReservations(DateTime.Now, options.RoomId)));
+                    _refreshTimer.Start();
                 });
 
         }
