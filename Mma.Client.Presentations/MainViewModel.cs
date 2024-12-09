@@ -5,13 +5,16 @@ namespace Mma.Client.Presentations;
 
 public partial class MainViewModel : ObservableObject, IMainViewModel
 {
-    public MainViewModel(IStateRoomViewModel stateRoomViewModel)
+    public MainViewModel(IStateRoomViewModel stateRoomViewModel, IDailyScheduleViewModel dailyScheduleViewModel)
     {
-        _stateRoomViewModel = stateRoomViewModel;
+        StateRoomViewModel = stateRoomViewModel;
+        DailyScheduleViewModel = dailyScheduleViewModel;
     }
 
     [ObservableProperty]
     private IStateRoomViewModel _stateRoomViewModel;
 
     public void Refresh(RoomState roomState) => StateRoomViewModel = new StateRoomViewModel(roomState);
+
+    public IDailyScheduleViewModel DailyScheduleViewModel { get; set; }
 }

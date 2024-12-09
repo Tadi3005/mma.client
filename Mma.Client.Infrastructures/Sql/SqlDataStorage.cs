@@ -9,5 +9,6 @@ namespace Mma.Client.Infrastructures.Sql;
 public class SqlDataStorage(MySqlConnection connection) : IDataStorage
 {
     public IRoomDao RoomDao { get; } = new SqlRoomDao(connection, new SqlRoomMapper());
+
     public ICalendarDao CalendarDao { get; } = new SqlCalendarDao(connection, new SqlCalendarMapper());
 }

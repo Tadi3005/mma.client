@@ -3,14 +3,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:presentations="clr-namespace:Mma.Client.Presentations;assembly=Mma.Client.Presentations"
-        xmlns:dummy="clr-namespace:Mma.Client.Presentations.Dummy;assembly=Mma.Client.Presentations"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Mma.Client.Views.MainWindow"
         x:DataType="presentations:IMainViewModel"
         Title="Mma.Client">
-    <Design.DataContext>
-        <dummy:DummyMainViewModel />
-    </Design.DataContext>
     <Grid RowDefinitions="Auto, *" ColumnDefinitions="*,Auto">
         
         <TabControl Grid.Row="0" Grid.Column="0">
@@ -36,6 +32,22 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        
+        <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Orientation="Vertical" Margin="10">
+            <DatePicker SelectedDate="{Binding DailyScheduleViewModel.SelectedDate}" Margin="0,0,0,10" HorizontalAlignment="Stretch"></DatePicker>
+            <ItemsControl ItemsSource="{Binding DailyScheduleViewModel.Slots}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding TimeStart}"
+                                   Background="{Binding HexColorBackground}" 
+                                   HorizontalAlignment="Stretch" 
+                                   Padding="5" 
+                                   Margin="0,2" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <!-- <TextBlock Text="{Binding ErrorWeekend}" Foreground="#FF0000"></TextBlock> -->
+        </StackPanel> 
         
     </Grid>
 </Window>

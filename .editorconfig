@@ -357,6 +357,7 @@ dotnet_diagnostic.SX1309.severity = warning # Field must start with an underscor
 
 # Threshold configuration
 dotnet_diagnostic.HE0001.threshold=5
+dotnet_diagnostic.HE0001.threshold.record=10
 dotnet_diagnostic.HE0002.threshold=15
 dotnet_diagnostic.HE0005.threshold=20
 

@@ -12,17 +12,17 @@ namespace Mma.Client.Presentations
         private string _roomName = $"{roomState.IdRoom} - {roomState.NameRoom}";
 
         [ObservableProperty]
-        private string _timeCurentSlot = $"{roomState.TimeCurrentSlot.ToString("dddd dd MMMM")} - créneau de {roomState.TimeCurrentSlot.ToString("HH:mm")}";
+        private string _timeCurentSlot = $"{roomState.TimeCurrentSlot:dddd dd MMMM} - créneau de {roomState.TimeCurrentSlot:HH:mm}";
 
         [ObservableProperty]
         private string _nameActualReservation = roomState.ActualReservation == Reservation.Empty ? "Aucun événement en cours" : roomState.ActualReservation.Summary;
 
         [ObservableProperty]
-        public string _timeActualReservation = roomState.ActualReservation == Reservation.Empty ? string.Empty
-            : $"de roomState.ActualReservation.Start.ToString(HH:mm) à roomState.ActualReservation.End.ToString(HH:mm)";
+        private string _timeActualReservation = roomState.ActualReservation == Reservation.Empty ? string.Empty
+            : $"de {roomState.ActualReservation.Start:HH:mm} à {roomState.ActualReservation.End:HH:mm}";
 
         [ObservableProperty]
-        public string _timeNextReservation = roomState.NextReservation == Reservation.Empty ? "Disponnible jusqu'à la fin de la journée" :
-            $"de {roomState.NextReservation.Start.ToString("HH:mm")} à {roomState.NextReservation.End.ToString("HH:mm")}";
+        private string _timeNextReservation = roomState.NextReservation == Reservation.Empty ? "Disponnible jusqu'à la fin de la journée" :
+            $"de {roomState.NextReservation.Start:HH:mm} à {roomState.NextReservation.End:HH:mm}";
     }
 }
