@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Serilog;
 
 namespace Mma.Client.Views;
 

@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using Mma.Client.Domains;
 using Mma.Client.Domains.AskReservation;
 using Mma.Client.Presentations.ViewModel;
 
@@ -7,7 +6,6 @@ namespace Mma.Client.Presentations;
 
 public partial class ReservationStatusViewModel(ReservationStatus status) : ObservableObject, IReservationStatusViewModel
 {
-
     [ObservableProperty]
     private string _status = status switch
     {
@@ -31,5 +29,4 @@ public partial class ReservationStatusViewModel(ReservationStatus status) : Obse
         ReservationStatus.None => "#FFFFFF",
         _ => "#FF0000"
     };
-
 }

@@ -4,6 +4,11 @@ using Mma.Client.Presentations.ViewModel;
 
 namespace Mma.Client.Presentations;
 
+/**
+ * <summary>
+ * Represents a slot view model.
+ * </summary>
+ */
 public partial class SlotViewModel(Slot slot) : ObservableObject, ISlotViewModel
 {
     [ObservableProperty]

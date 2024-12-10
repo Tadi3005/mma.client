@@ -10,7 +10,9 @@ namespace Mma.Client.Presentations;
 public partial class ReservationViewModel : ObservableObject, IReservationViewModel
 {
     private readonly ReservationService _reservationService;
+
     private readonly IDataService _dataService;
+
     private readonly Room _room;
 
     public ReservationViewModel(IReservationStatusViewModel statusViewModelViewModel, ReservationService reservationService,

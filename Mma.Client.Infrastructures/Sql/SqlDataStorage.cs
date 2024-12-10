@@ -8,9 +8,9 @@ namespace Mma.Client.Infrastructures.Sql;
 
 public class SqlDataStorage(DbConnection connection) : IDataStorage
 {
-    public IRoomDao RoomDao { get; } = new SqlRoomDao(connection, new SqlRoomMapper());
+    public IRoomDao RoomDao => new SqlRoomDao(connection, new SqlRoomMapper());
 
-    public ICalendarDao CalendarDao { get; } = new SqlCalendarDao(connection, new SqlCalendarMapper());
+    public ICalendarDao CalendarDao => new SqlCalendarDao(connection, new SqlCalendarMapper());
 
-    public IUserDao UserDao { get; } = new SqlUserDao(connection, new SqlUserMapper());
+    public IUserDao UserDao => new SqlUserDao(connection, new SqlUserMapper());
 }

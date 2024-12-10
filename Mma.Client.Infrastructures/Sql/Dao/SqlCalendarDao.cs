@@ -25,13 +25,8 @@ public class SqlCalendarDao(DbConnection connection, SqlCalendarMapper mapper) :
         using var reader = command.ExecuteReader();
         while (reader.Read())
         {
-            var dto = new SqlReservationDto(
-                (int)reader["id_reservation"],
-                reader.GetValue(reader.GetOrdinal("date")).ToString(),
-                reader.GetValue(reader.GetOrdinal("time_start")).ToString(),
-                reader.GetValue(reader.GetOrdinal("time_end")).ToString(),
-                (string)reader["summary"],
-                (string)reader["description"],
+            var dto = new SqlReservationDto((int)reader["id_reservation"], reader.GetValue(reader.GetOrdinal("date")).ToString(),
+                reader.GetValue(reader.GetOrdinal("time_start")).ToString(), reader.GetValue(reader.GetOrdinal("time_end")).ToString(), (string)reader["summary"], (string)reader["description"],
                 new SqlRoomDto((string)reader["id"], (string)reader["name"], (int)reader["capacity"]),
                 new SqlUserDto((string)reader["matricule"], (string)reader["fullname"], (string)reader["email"]));
             var reservation = mapper.Map(dto);

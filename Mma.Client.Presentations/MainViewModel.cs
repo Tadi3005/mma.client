@@ -3,21 +3,12 @@ using Mma.Client.Presentations.ViewModel;
 
 namespace Mma.Client.Presentations;
 
-public partial class MainViewModel : ObservableObject, IMainViewModel
+public class MainViewModel(IStateRoomViewModel roomStateManagerViewModel, IDailyScheduleViewModel dailyScheduleViewModel,
+    IReservationViewModel reservationViewModel) : ObservableObject, IMainViewModel
 {
-    public MainViewModel(IStateRoomViewModel stateRoomViewModel, IDailyScheduleViewModel dailyScheduleViewModel, IReservationViewModel reservationViewModel)
-    {
-        StateRoomViewModel = stateRoomViewModel;
-        DailyScheduleViewModel = dailyScheduleViewModel;
-        ReservationViewModel = reservationViewModel;
-    }
+    public IDailyScheduleViewModel DailyScheduleViewModel { get; } = dailyScheduleViewModel;
 
-    [ObservableProperty]
-    private IStateRoomViewModel _stateRoomViewModel;
+    public IReservationViewModel ReservationViewModel { get; } = reservationViewModel;
 
-    public IDailyScheduleViewModel DailyScheduleViewModel { get; }
-
-    public IReservationViewModel ReservationViewModel { get; }
-
-    public void Refresh(IStateRoomViewModel roomState) => StateRoomViewModel = roomState;
+    public IStateRoomViewModel StateRoomViewModel { get; set; } = roomStateManagerViewModel;
 }

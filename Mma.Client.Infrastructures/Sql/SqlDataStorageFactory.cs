@@ -3,23 +3,16 @@ using Mma.Client.Domains.Data;
 
 namespace Mma.Client.Infrastructures.Sql;
 
-public class SqlDataStorageFactory : IDataStorageFactory
+public class SqlDataStorageFactory(string connectionString, string providerName) : IDataStorageFactory
 {
-    private readonly string _connectionString;
-    private readonly DbProviderFactory _factory;
-
-    public SqlDataStorageFactory(string connectionString, string providerName)
-    {
-        _connectionString = connectionString;
-        _factory = DbProviderFactories.GetFactory(providerName);
-    }
+    private readonly DbProviderFactory _factory = DbProviderFactories.GetFactory(providerName);
 
     public IDataStorage CreateDataStorage()
     {
         try
         {
             var connection = _factory.CreateConnection();
-            connection.ConnectionString = _connectionString;
+            connection.ConnectionString = connectionString;
             connection.Open();
             return new SqlDataStorage(connection);
         }

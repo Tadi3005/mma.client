@@ -6,7 +6,12 @@ using Mma.Client.Presentations.ViewModel;
 
 namespace Mma.Client.Presentations;
 
-public partial class DailyScheduleViewModel(IList<ISlotViewModel> slotViewModels, DailySchedule dailySchedule, Room room, IDataService service) : ObservableObject, IDailyScheduleViewModel
+/**
+ * <summary>
+ * Represents a daily schedule view model.
+ * </summary>
+ */
+public partial class DailyScheduleViewModel(IList<ISlotViewModel> slotViewModels, ScheduleService dailyScheduleService, Room room, IDataService service) : ObservableObject, IDailyScheduleViewModel
 {
     [ObservableProperty]
     private string _selectedDate = DateTime.Now.ToString("yyyy-MM-dd");
@@ -19,7 +24,7 @@ public partial class DailyScheduleViewModel(IList<ISlotViewModel> slotViewModels
         DateTime selectedDate = DateTime.Parse(value);
         IList<Reservation> reservations = service.FindReservations(selectedDate, room.Id);
 
-        dailySchedule.Slots = dailySchedule.GenerateSlots(selectedDate, reservations);
+        var dailySchedule = dailyScheduleService.CreateSchedule(selectedDate, reservations);
 
         var updatedSlotViewModels = dailySchedule.Slots.Select(slot =>
             new SlotViewModel(slot)).ToList();

@@ -19,5 +19,4 @@ public class SqlCalendarMapper
             new Room(dto.Room.Id, dto.Room.Name, dto.Room.Capacity),
             new User(dto.User.Matricule, dto.User.FullName, dto.User.Email));
     }
-
 }

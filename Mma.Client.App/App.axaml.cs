@@ -60,7 +60,7 @@ public class App : Application
                     var users = service.FindAllUsers();
                     var reservations = service.FindReservations(DateTime.Now, options.RoomId);
                     var roomState = new RoomState(room, reservations);
-                    var dailySchedule = new DailySchedule(DateTime.Now, reservations);
+                    var dailyScheduleService = new ScheduleService(new SlotGenerator());
                     var reservationService = new ReservationService(new List<IReservationValidator>
                     {
                         new UserIdValidator(),
@@ -75,7 +75,7 @@ public class App : Application
 
                     var stateRoomViewModel = new StateRoomViewModel(roomState);
                     var slotViewModels = new List<ISlotViewModel>();
-                    var dailyScheduleViewModel = new DailyScheduleViewModel(slotViewModels, dailySchedule, room, service);
+                    var dailyScheduleViewModel = new DailyScheduleViewModel(slotViewModels, dailyScheduleService, room, service);
                     var statusViewModel = new ReservationStatusViewModel(ReservationStatus.None);
                     var reservationViewModel = new ReservationViewModel(statusViewModel, reservationService, service, room);
                     var mainViewModel = new MainViewModel(stateRoomViewModel, dailyScheduleViewModel, reservationViewModel);
@@ -87,7 +87,7 @@ public class App : Application
                     desktop.MainWindow = _mainWindow;
 
 
-                    _refreshTimer.Elapsed += (_,_) => mainViewModel.Refresh(new StateRoomViewModel(new RoomState(room, service.FindReservations(DateTime.Now, options.RoomId))));
+                    _refreshTimer.Elapsed += (_,_) => mainViewModel.StateRoomViewModel = new StateRoomViewModel(new RoomState(room, service.FindReservations(DateTime.Now, options.RoomId)));
                     _refreshTimer.Start();
                 });
 
