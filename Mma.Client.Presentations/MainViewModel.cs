@@ -1,20 +1,23 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using Mma.Client.Domains;
+using Mma.Client.Presentations.ViewModel;
 
 namespace Mma.Client.Presentations;
 
 public partial class MainViewModel : ObservableObject, IMainViewModel
 {
-    public MainViewModel(IStateRoomViewModel stateRoomViewModel, IDailyScheduleViewModel dailyScheduleViewModel)
+    public MainViewModel(IStateRoomViewModel stateRoomViewModel, IDailyScheduleViewModel dailyScheduleViewModel, IReservationViewModel reservationViewModel)
     {
         StateRoomViewModel = stateRoomViewModel;
         DailyScheduleViewModel = dailyScheduleViewModel;
+        ReservationViewModel = reservationViewModel;
     }
 
     [ObservableProperty]
     private IStateRoomViewModel _stateRoomViewModel;
 
-    public void Refresh(RoomState roomState) => StateRoomViewModel = new StateRoomViewModel(roomState);
+    public IDailyScheduleViewModel DailyScheduleViewModel { get; }
 
-    public IDailyScheduleViewModel DailyScheduleViewModel { get; set; }
+    public IReservationViewModel ReservationViewModel { get; }
+
+    public void Refresh(IStateRoomViewModel roomState) => StateRoomViewModel = roomState;
 }

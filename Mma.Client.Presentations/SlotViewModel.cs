@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mma.Client.Domains;
+using Mma.Client.Presentations.ViewModel;
 
 namespace Mma.Client.Presentations;
 

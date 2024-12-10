@@ -1,4 +1,5 @@
 using Mma.Client.Domains;
+using Mma.Client.Domains.AskReservation;
 using Mma.Client.Domains.Data.Dao;
 using Mma.Client.Infrastructures.Dto.Sql;
 using Mma.Client.Infrastructures.Mapper;
@@ -33,4 +34,6 @@ public class SqlCalendarDao(MySqlConnection connection, SqlCalendarMapper mapper
 
         return reservations;
     }
+
+    public void Add(ReservationRequest request) => throw new NotImplementedException();
 }

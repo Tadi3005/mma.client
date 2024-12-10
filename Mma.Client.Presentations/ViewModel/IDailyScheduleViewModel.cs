@@ -1,6 +1,4 @@
-using System.Collections.ObjectModel;
-
-namespace Mma.Client.Presentations;
+namespace Mma.Client.Presentations.ViewModel;
 
 public interface IDailyScheduleViewModel
 {

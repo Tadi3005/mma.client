@@ -3,9 +3,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:presentations="clr-namespace:Mma.Client.Presentations;assembly=Mma.Client.Presentations"
+        xmlns:viewModel="clr-namespace:Mma.Client.Presentations.ViewModel;assembly=Mma.Client.Presentations"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Mma.Client.Views.MainWindow"
-        x:DataType="presentations:IMainViewModel"
+        x:DataType="viewModel:IMainViewModel"
         Title="Mma.Client">
     <Grid RowDefinitions="Auto, *" ColumnDefinitions="*,Auto">
         
@@ -31,6 +32,48 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            
+            <TabItem Header="Demande de réservation">
+                <Grid RowDefinitions="Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto" Margin="20" ColumnDefinitions="*">
+                    <TextBlock Grid.Row="0" Text="Demande de réservation pour LC1" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                    <StackPanel Grid.Row="2">
+                        <TextBlock Text="Votre matricule :" />
+                        <TextBox Text="{Binding ReservationViewModel.Matricule}" />
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Row="4">
+                        <TextBlock Text="Date"/>
+                        <DatePicker SelectedDate="{Binding ReservationViewModel.Date}"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Row="6">
+                        <TextBlock Text="Période" />
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,10">
+                            <TextBlock Text="De" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TimePicker SelectedTime="{Binding ReservationViewModel.TimeStart}"></TimePicker>
+                            
+                            <TextBlock Text=" à " VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TimePicker SelectedTime="{Binding ReservationViewModel.TimeEnd}"></TimePicker>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Row="8">
+                        <TextBlock Text="Personnes attendues" />
+                        <NumericUpDown Minimum="1" Maximum="100" Value="{Binding ReservationViewModel.NumberOfPeople}" />
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Row="10">
+                        <TextBlock Text="Description" />
+                        <TextBox Text="{Binding ReservationViewModel.Description}"/>
+                    </StackPanel>
+                    
+                    <Button Command="{Binding ReservationViewModel.AddReservation}" Grid.Row="12" Content="Réserver" Background="CornflowerBlue" Foreground="White" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"></Button>
+                    
+                    <TextBlock Grid.Row="13" Text="{Binding ReservationViewModel.ReservationStatusViewModel.Status}" Foreground="{Binding ReservationViewModel.ReservationStatusViewModel.StatusColorHex}" HorizontalAlignment="Center" Margin="10"></TextBlock>
+                </Grid>
+            </TabItem>
+            
         </TabControl>
         
         <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Orientation="Vertical" Margin="10">

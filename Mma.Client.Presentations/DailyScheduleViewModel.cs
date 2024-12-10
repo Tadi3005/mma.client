@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mma.Client.Domains;
 using Mma.Client.Domains.Data;
+using Mma.Client.Presentations.ViewModel;
 
 namespace Mma.Client.Presentations;
 
@@ -13,9 +14,9 @@ public partial class DailyScheduleViewModel(IList<ISlotViewModel> slotViewModels
     [ObservableProperty]
     private IReadOnlyCollection<ISlotViewModel> _slots = new ObservableCollection<ISlotViewModel>(slotViewModels);
 
-    partial void OnSelectedDateChanged(string date)
+    partial void OnSelectedDateChanged(string value)
     {
-        DateTime selectedDate = DateTime.Parse(date);
+        DateTime selectedDate = DateTime.Parse(value);
         IList<Reservation> reservations = service.FindReservations(selectedDate, room.Id);
 
         dailySchedule.Slots = dailySchedule.GenerateSlots(selectedDate, reservations);

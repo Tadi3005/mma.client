@@ -7,4 +7,6 @@ public interface IDataStorage
     IRoomDao RoomDao { get; }
 
     ICalendarDao CalendarDao { get; }
+
+    IUserDao UserDao { get; }
 }

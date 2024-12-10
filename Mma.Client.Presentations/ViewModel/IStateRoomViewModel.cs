@@ -1,4 +1,4 @@
-namespace Mma.Client.Presentations;
+namespace Mma.Client.Presentations.ViewModel;
 
 public interface IStateRoomViewModel
 {

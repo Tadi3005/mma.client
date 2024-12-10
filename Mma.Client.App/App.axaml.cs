@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Timers;
 using Avalonia;
 using Avalonia.Controls;
@@ -7,10 +8,14 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using CommandLine;
 using Mma.Client.Domains;
+using Mma.Client.Domains.AskReservation;
+using Mma.Client.Domains.AskReservation.Validator;
 using Mma.Client.Infrastructures;
 using Mma.Client.Infrastructures.Sql;
 using Mma.Client.Presentations;
+using Mma.Client.Presentations.ViewModel;
 using Mma.Client.Views;
+using MySql.Data.MySqlClient;
 using Serilog;
 
 namespace Mma.Client.App;
@@ -46,17 +51,31 @@ public class App : Application
                     Logger.Information("Launching app");
                     var connectionString = new ConnectionStringBuilder(options.ConnectionString);
                     var connection = new SqlConnectionManager(connectionString);
-                    var factory = new SqlDataStorageFactory(connection);
+                    var factory = new SqlDataStorageFactory(connection.Connection);
                     var service = new SqlService(factory.CreateDataStorage());
                     var room = service.FindRoomById(options.RoomId);
+                    var users = service.FindAllUsers();
                     var reservations = service.FindReservations(DateTime.Now, options.RoomId);
                     var roomState = new RoomState(room, reservations);
                     var dailySchedule = new DailySchedule(DateTime.Now, reservations);
+                    var reservationService = new ReservationService(new List<IReservationValidator>
+                    {
+                        new UserIdValidator(),
+                        new RoomCapacityValidator(),
+                        new RoomAvailabilityValidator(),
+                        new EndBeforeStartValidator(),
+                        new OutsideOpeningHoursValidator(),
+                        new PastDateValidator(),
+                        new HoursExactlyValidator(),
+                        new DescriptionValidator()
+                    }, users, room);
 
                     var stateRoomViewModel = new StateRoomViewModel(roomState);
                     var slotViewModels = new List<ISlotViewModel>();
                     var dailyScheduleViewModel = new DailyScheduleViewModel(slotViewModels, dailySchedule, room, service);
-                    var mainViewModel = new MainViewModel(stateRoomViewModel, dailyScheduleViewModel);
+                    var statusViewModel = new ReservationStatusViewModel(ReservationStatus.None);
+                    var reservationViewModel = new ReservationViewModel(statusViewModel, reservationService, service, room);
+                    var mainViewModel = new MainViewModel(stateRoomViewModel, dailyScheduleViewModel, reservationViewModel);
 
                     _mainWindow = new MainWindow
                     {
@@ -64,7 +83,8 @@ public class App : Application
                     };
                     desktop.MainWindow = _mainWindow;
 
-                    _refreshTimer.Elapsed += (_,_) => mainViewModel.Refresh(new RoomState(room, service.FindReservations(DateTime.Now, options.RoomId)));
+
+                    _refreshTimer.Elapsed += (_,_) => mainViewModel.Refresh(new StateRoomViewModel(new RoomState(room, service.FindReservations(DateTime.Now, options.RoomId))));
                     _refreshTimer.Start();
                 });
 
