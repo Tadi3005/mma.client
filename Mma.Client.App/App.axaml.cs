@@ -49,9 +49,12 @@ public class App : Application
                 .WithParsed(options =>
                 {
                     Logger.Information("Launching app");
-                    var connectionString = new ConnectionStringBuilder(options.ConnectionString);
-                    var connection = new SqlConnectionManager(connectionString);
-                    var factory = new SqlDataStorageFactory(connection.Connection);
+                    const string provider = "MySql.Data.MySqlClient";
+                    var connectionStringBuilder = new ConnectionStringBuilder(options.ConnectionString);
+                    DbProviderFactories.RegisterFactory(provider, MySqlClientFactory.Instance);
+                    var connectionString = $"Server={connectionStringBuilder.DbServer};Port={connectionStringBuilder.DbPort};Database={connectionStringBuilder.DbDataBase};User Id={connectionStringBuilder.DbUser};Password={connectionStringBuilder.DbPassword}";
+
+                    var factory = new SqlDataStorageFactory(connectionString, provider);
                     var service = new SqlService(factory.CreateDataStorage());
                     var room = service.FindRoomById(options.RoomId);
                     var users = service.FindAllUsers();

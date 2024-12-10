@@ -1,4 +1,3 @@
-using System.Data.Common;
 using Mma.Client.Domains;
 using Mma.Client.Domains.AskReservation;
 using Mma.Client.Domains.Data;
