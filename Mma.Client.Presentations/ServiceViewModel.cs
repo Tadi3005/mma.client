@@ -13,7 +13,7 @@ public partial class ServiceViewModel(Service service) : ObservableObject, IServ
 {
     public string Name { get; set; } = service.Name;
 
-    public Service Service { get; set; } = service;
+    public Service Service => service;
 
     [ObservableProperty]
     private bool _isChecked;

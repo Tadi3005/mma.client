@@ -12,7 +12,7 @@ namespace Mma.Client.Presentations;
 public partial class SlotViewModel(Slot slot) : ObservableObject, ISlotViewModel
 {
     [ObservableProperty]
-    private string _timeStart = slot.Start.ToString("HH:mm");
+    private string _timeEnd = slot.End.ToString("HH:mm");
 
     [ObservableProperty]
     private string _hexColorBackground = slot.IsFree ? "#00ffa1" : "#ff01a0";

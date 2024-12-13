@@ -1,4 +1,3 @@
-using System.Windows.Input;
 using Mma.Client.Domains;
 
 namespace Mma.Client.Presentations.ViewModel;

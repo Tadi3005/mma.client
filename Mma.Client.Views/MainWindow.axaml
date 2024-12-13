@@ -96,7 +96,7 @@
             <ItemsControl ItemsSource="{Binding DailyScheduleViewModel.Slots}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding TimeStart}"
+                        <TextBlock Text="{Binding TimeEnd}"
                                    Background="{Binding HexColorBackground}" 
                                    HorizontalAlignment="Stretch" 
                                    Padding="5" 
