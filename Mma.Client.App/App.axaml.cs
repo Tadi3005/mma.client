@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Timers;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using CommandLine;
 using Mma.Client.Domains;
 using Mma.Client.Domains.AskReservation;
@@ -28,7 +28,8 @@ public class App : Application
         .WriteTo.File("log.txt")
         .CreateLogger();
     private MainWindow? _mainWindow;
-    private readonly Timer _refreshTimer = new(TimeSpan.FromMinutes(5).TotalMilliseconds); // TODO: DispatcherTimer
+    private readonly DispatcherTimer _dispatcherTimer = new() { Interval = TimeSpan.FromMinutes(5) };
+    private SqlDataStorageFactory? _factory;
 
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
 
@@ -49,22 +50,15 @@ public class App : Application
                     {
                         Logger.Information("Launching app");
 
+                        // Connection
                         const string provider = "MySql.Data.MySqlClient";
                         var connectionStringBuilder = new ConnectionStringBuilder(options.ConnectionString);
-                        DbProviderFactories.RegisterFactory(provider, MySqlClientFactory.Instance);
-                        var connectionString = $"Server={connectionStringBuilder.DbServer};Port={connectionStringBuilder.DbPort};Database={connectionStringBuilder.DbDataBase};User Id={connectionStringBuilder.DbUser};Password={connectionStringBuilder.DbPassword}";
-                        var connection = DbProviderFactories.GetFactory(provider).CreateConnection();
+                        var connectionString =
+                            $"Server={connectionStringBuilder.DbServer};Port={connectionStringBuilder.DbPort};Database={connectionStringBuilder.DbDataBase};User Id={connectionStringBuilder.DbUser};Password={connectionStringBuilder.DbPassword}";
 
-                        if (connection == null)
-                        {
-                            throw new InvalidOperationException("Connection is null");
-                        }
-
-                        connection.ConnectionString = connectionString;
-                        connection.Open();
-
-                        var factory = new SqlDataStorageFactory();
-                        var service = new SqlService(factory.CreateDataStorage(connection));
+                        // Services
+                        _factory = new SqlDataStorageFactory(connectionString, provider, MySqlClientFactory.Instance);
+                        var service = new SqlService(_factory.CreateDataStorage());
                         var openingHours = new OpeningHours(new TimeSpan(8, 0, 0), new TimeSpan(18, 0, 0));
                         var room = service.FindRoomById(options.RoomId);
                         var users = service.FindAllUsers();
@@ -101,20 +95,32 @@ public class App : Application
                         _mainWindow = new MainWindow { DataContext = mainViewModel };
                         desktop.MainWindow = _mainWindow;
 
-                        _refreshTimer.Elapsed += (_, _) =>
+                        // Timer
+                        _dispatcherTimer.Tick += (_, _) =>
                         {
+                            Logger.Information("Refreshing room state");
                             var refreshRoomState = new RoomState(room, service.FindReservations(DateTime.Now, options.RoomId));
                             mainViewModel.StateRoomViewModel = new StateRoomViewModel(new ActualStateRoomViewModel(refreshRoomState), refreshRoomState);
                         };
-                        _refreshTimer.Start();
+
+                        _dispatcherTimer.Start();
                     });
+
+                    desktop.Exit += (_, _) =>
+                    {
+                        _dispatcherTimer.Stop();
+                        _factory?.Dispose();
+                        Logger.Information("Database connection and dispatcher timer stopped.");
+                    };
             }
             catch (Exception ex)
             {
                 Logger.Error($"An error occurred during application initialization: {ex.Message}");
                 desktop.MainWindow?.Close();
+                Environment.Exit(1);
             }
         }
         base.OnFrameworkInitializationCompleted();
     }
+
 }
