@@ -8,7 +8,7 @@ public interface ICalendarDao
 
     void Add(ReservationRequest request, string idRoom);
 
-    void Add(IList<Service> services, string idReservation);
+    void Add(string idService, string idReservation);
 
     IList<Service> FindAll();
 

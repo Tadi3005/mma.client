@@ -27,9 +27,12 @@ public partial class ReservationViewModel(IReservationStatusViewModel statusView
         var date = DateTime.Parse(ReservationRequestViewModel.DateTimeReservationRequestViewModel.Date);
         var timeStart = DateTime.Parse(ReservationRequestViewModel.DateTimeReservationRequestViewModel.TimeStart);
         var timeEnd = DateTime.Parse(ReservationRequestViewModel.DateTimeReservationRequestViewModel.TimeEnd);
-        var request = new ReservationRequest(ReservationRequestViewModel.Description, date, timeStart, timeEnd,
+
+        // TODO: Récupérer les services sélectionnés par l'utilisateur
+        var services = ReservationRequestViewModel.ReservationServicesViewModel.SelectedServices;
+        var request = new ReservationRequest(ReservationRequestViewModel.Matricule, date, timeStart, timeEnd,
             ReservationRequestViewModel.NumberOfPeople, ReservationRequestViewModel.Description,
-            ReservationRequestViewModel.ReservationServicesViewModel.SelectedServices);
+            services);
         var reservations = dataService.FindReservations(date, room.Id);
         var reservationStatus = reservationService.Reserve(request, reservations);
 

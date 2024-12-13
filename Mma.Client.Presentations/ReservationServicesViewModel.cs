@@ -1,14 +1,25 @@
-﻿using Mma.Client.Domains;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Mma.Client.Domains;
 using Mma.Client.Presentations.ViewModel;
 
 namespace Mma.Client.Presentations;
 
-public class ReservationServicesViewModel(IList<Service> services) : IReservationServicesViewModel
+public class ReservationServicesViewModel : ObservableObject, IReservationServicesViewModel
 {
-    public IReadOnlyCollection<IServiceViewModel> Services => services.Select(service => new ServiceViewModel(service)).ToList();
-
-    public IList<Service> SelectedServices
+    public ReservationServicesViewModel(IList<Service> services)
     {
-        get => Services.Where(service => service.IsChecked).Select(service => service.Service).ToList();
+        _services = new ObservableCollection<ServiceViewModel>(
+            services.Select(service => new ServiceViewModel(service)));
     }
+
+    private readonly ObservableCollection<ServiceViewModel> _services;
+
+    public IReadOnlyCollection<IServiceViewModel> Services => _services;
+
+    public IList<Service> SelectedServices =>
+        _services
+            .Where(serviceViewModel => serviceViewModel.IsChecked)
+            .Select(serviceViewModel => serviceViewModel.Service)
+            .ToList();
 }

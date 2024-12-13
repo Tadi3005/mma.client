@@ -1,17 +1,19 @@
 namespace Mma.Client.Domains.AskReservation;
 
-public class ReservationService
+public class ReservationService(IList<IReservationValidator> validators, IList<User> users, Room room)
 {
-    private readonly IList<IReservationValidator> _validators;
-    private readonly IList<User> _users;
-    private readonly Room _room;
-
-    public ReservationService(IList<IReservationValidator> validators, IList<User> users, Room room)
+    public ReservationStatus Reserve(ReservationRequest reservation, IList<Reservation> events)
     {
-        _validators = validators;
-        _users = users;
-        _room = room;
-    }
+        foreach (var t in validators)
+        {
+            var status = t.Validate(reservation, events, users, room);
 
-    public ReservationStatus Reserve(ReservationRequest reservation, IList<Reservation> events) => _validators.Select(validator => validator.Validate(reservation, events, _users, _room)).FirstOrDefault(status => status != ReservationStatus.Accepted);
+            if (status != ReservationStatus.Accepted)
+            {
+                return status;
+            }
+        }
+
+        return ReservationStatus.Accepted;
+    }
 }

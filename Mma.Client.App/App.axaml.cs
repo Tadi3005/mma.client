@@ -53,7 +53,7 @@ public class App : Application
                         var connectionStringBuilder = new ConnectionStringBuilder(options.ConnectionString);
                         DbProviderFactories.RegisterFactory(provider, MySqlClientFactory.Instance);
                         var connectionString = $"Server={connectionStringBuilder.DbServer};Port={connectionStringBuilder.DbPort};Database={connectionStringBuilder.DbDataBase};User Id={connectionStringBuilder.DbUser};Password={connectionStringBuilder.DbPassword}";
-                        using var connection = DbProviderFactories.GetFactory(provider).CreateConnection();
+                        var connection = DbProviderFactories.GetFactory(provider).CreateConnection();
 
                         if (connection == null)
                         {

@@ -17,7 +17,10 @@ public class SqlService(IDataStorage dataStorage) : IDataService
         {
             dataStorage.CalendarDao.Add(request, roomId);
             var idReservation = dataStorage.CalendarDao.GetLastInsertedId();
-            dataStorage.CalendarDao.Add(request.Services, idReservation);
+            foreach (var service in request.Services)
+            {
+                dataStorage.CalendarDao.Add(service.Id.ToString(), idReservation);
+            }
 
             dataStorage.CommitTransaction(transaction);
         }

@@ -11,7 +11,7 @@ public class SqlCalendarDao(DbConnection connection, SqlCalendarMapper calendarM
 {
     public IList<Reservation> FindByRoomIdAndDate(DateTime date, string roomId)
     {
-        IList<Reservation> reservations = new List<Reservation>();
+        var reservations = new List<Reservation>();
         using var command = connection.CreateCommand();
         command.CommandText = "SELECT * FROM reservation JOIN room ON reservation.id_room = room.id JOIN member ON reservation.matricule_user = member.matricule WHERE id_room = @roomId AND date = @date";
         AddSqlParameter(command, "@roomId", roomId);
@@ -51,24 +51,19 @@ public class SqlCalendarDao(DbConnection connection, SqlCalendarMapper calendarM
         return command.ExecuteScalar()?.ToString() ?? throw new InvalidOperationException();
     }
 
-    public void Add(IList<Service> services, string idReservation)
+    public void Add(string idService, string idReservation)
     {
         using var command = connection.CreateCommand();
         command.CommandText = "INSERT INTO reservation_service (id_reservation, id_service) VALUES (@idReservation, @idService)";
+
         AddSqlParameter(command, "@idReservation", idReservation);
-        var idServiceParameter = command.CreateParameter();
-        idServiceParameter.ParameterName = "@idService";
-        foreach (var service in services)
-        {
-            idServiceParameter.Value = service.Id;
-            command.Parameters.Add(idServiceParameter);
-            command.ExecuteNonQuery();
-        }
+        AddSqlParameter(command, "@idService", idService);
+        command.ExecuteNonQuery();
     }
 
     public IList<Service> FindAll()
     {
-        IList<Service> services = new List<Service>();
+        var services = new List<Service>();
         using var command = connection.CreateCommand();
         command.CommandText = "SELECT * FROM service";
         using var reader = command.ExecuteReader();
@@ -86,7 +81,7 @@ public class SqlCalendarDao(DbConnection connection, SqlCalendarMapper calendarM
     {
         var parameter = command.CreateParameter();
         parameter.ParameterName = parameterName;
-        parameter.Value = value ?? DBNull.Value;
+        parameter.Value = value;
         command.Parameters.Add(parameter);
     }
 }
