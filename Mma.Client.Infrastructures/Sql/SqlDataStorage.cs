@@ -13,4 +13,10 @@ public class SqlDataStorage(DbConnection connection) : IDataStorage
     public ICalendarDao CalendarDao => new SqlCalendarDao(connection, new SqlCalendarMapper());
 
     public IUserDao UserDao => new SqlUserDao(connection, new SqlUserMapper());
+
+    public DbTransaction BeginTransaction() => connection.BeginTransaction();
+
+    public void CommitTransaction(DbTransaction transaction) => transaction.Commit();
+
+    public void RollbackTransaction(DbTransaction transaction) => transaction.Rollback();
 }

@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:Mma.Client.Presentations.ViewModel;assembly=Mma.Client.Presentations"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="1000"
         x:Class="Mma.Client.Views.MainWindow"
         x:DataType="viewModel:IMainViewModel"
         Title="Mma.Client">
@@ -21,8 +21,8 @@
                     </StackPanel>
 
                     <StackPanel Grid.Row="3">
-                        <TextBlock Text="{Binding StateRoomViewModel.NameActualReservation}" Foreground="{Binding StateRoomViewModel.ColorStateRoom}"></TextBlock>
-                        <TextBlock Text="{Binding StateRoomViewModel.TimeActualReservation}" Foreground="{Binding StateRoomViewModel.ColorStateRoom}"></TextBlock>
+                        <TextBlock Text="{Binding StateRoomViewModel.ActualStateRoomViewModel.NameActualReservation}" Foreground="{Binding StateRoomViewModel.ColorStateRoom}"></TextBlock>
+                        <TextBlock Text="{Binding StateRoomViewModel.ActualStateRoomViewModel.TimeActualReservation}" Foreground="{Binding StateRoomViewModel.ColorStateRoom}"></TextBlock>
                     </StackPanel>
 
                     <StackPanel Grid.Row="5">
@@ -33,41 +33,57 @@
             </TabItem>
             
             <TabItem Header="Demande de réservation">
-                <Grid RowDefinitions="Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto" Margin="20" ColumnDefinitions="*">
+                <Grid RowDefinitions="Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto, 20, Auto" Margin="20" ColumnDefinitions="*">
                     <TextBlock Grid.Row="0" Text="Demande de réservation pour LC1" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
 
                     <StackPanel Grid.Row="2">
                         <TextBlock Text="Votre matricule :" />
-                        <TextBox Text="{Binding ReservationViewModel.Matricule}" />
+                        <TextBox Text="{Binding ReservationViewModel.ReservationRequestViewModel.Matricule}" />
                     </StackPanel>
                     
                     <StackPanel Grid.Row="4">
                         <TextBlock Text="Date"/>
-                        <DatePicker SelectedDate="{Binding ReservationViewModel.Date}"/>
+                        <DatePicker SelectedDate="{Binding ReservationViewModel.ReservationRequestViewModel.DateTimeReservationRequestViewModel.Date}"/>
                     </StackPanel>
                     
                     <StackPanel Grid.Row="6">
                         <TextBlock Text="Période" />
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,10">
                             <TextBlock Text="De" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TimePicker SelectedTime="{Binding ReservationViewModel.TimeStart}"></TimePicker>
+                            <TimePicker SelectedTime="{Binding ReservationViewModel.ReservationRequestViewModel.DateTimeReservationRequestViewModel.TimeStart}"></TimePicker>
                             
                             <TextBlock Text=" à " VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TimePicker SelectedTime="{Binding ReservationViewModel.TimeEnd}"></TimePicker>
+                            <TimePicker SelectedTime="{Binding ReservationViewModel.ReservationRequestViewModel.DateTimeReservationRequestViewModel.TimeEnd}"></TimePicker>
                         </StackPanel>
                     </StackPanel>
                     
                     <StackPanel Grid.Row="8">
                         <TextBlock Text="Personnes attendues" />
-                        <NumericUpDown Minimum="1" Maximum="100" Value="{Binding ReservationViewModel.NumberOfPeople}" />
+                        <NumericUpDown Minimum="1" Maximum="100" Value="{Binding ReservationViewModel.ReservationRequestViewModel.NumberOfPeople}" />
                     </StackPanel>
                     
                     <StackPanel Grid.Row="10">
                         <TextBlock Text="Description" />
-                        <TextBox Text="{Binding ReservationViewModel.Description}"/>
+                        <TextBox Text="{Binding ReservationViewModel.ReservationRequestViewModel.Description}"/>
                     </StackPanel>
                     
-                    <Button Command="{Binding ReservationViewModel.AddReservation}" Grid.Row="12" Content="Réserver" Background="CornflowerBlue" Foreground="White" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"></Button>
+                    <StackPanel Grid.Row="12">
+                        <TextBlock Text="Services" />
+                        <ItemsControl ItemsSource="{Binding ReservationViewModel.ReservationRequestViewModel.ReservationServicesViewModel.Services}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Margin="10" Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                    
+                    <Button Command="{Binding ReservationViewModel.AddReservation}" Grid.Row="14" Content="Réserver" Background="CornflowerBlue" Foreground="White" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"></Button>
                     
                     <TextBlock Grid.Row="13" Text="{Binding ReservationViewModel.ReservationStatusViewModel.Status}" Foreground="{Binding ReservationViewModel.ReservationStatusViewModel.StatusColorHex}" HorizontalAlignment="Center" Margin="10"></TextBlock>
                 </Grid>
@@ -88,8 +104,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <!-- <TextBlock Text="{Binding ErrorWeekend}" Foreground="#FF0000"></TextBlock> -->
-        </StackPanel> 
+        </StackPanel>
         
     </Grid>
 </Window>

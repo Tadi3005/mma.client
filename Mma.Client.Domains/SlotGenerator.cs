@@ -1,12 +1,12 @@
 namespace Mma.Client.Domains;
 
-public class SlotGenerator
+public class SlotGenerator(OpeningHours openingHours)
 {
     public IList<Slot> Generate(DateTime date, IList<Reservation> reservations)
     {
         var slots = new List<Slot>();
-        var startTime = date.Date.AddHours(8);
-        var endTime = date.Date.AddHours(17);
+        var startTime = date.Date.AddHours(openingHours.Start.Hours);
+        var endTime = date.Date.AddHours(openingHours.End.Hours);
 
         while (startTime < endTime)
         {

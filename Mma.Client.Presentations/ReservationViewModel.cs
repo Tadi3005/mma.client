@@ -1,3 +1,4 @@
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Mma.Client.Domains;
@@ -7,61 +8,39 @@ using Mma.Client.Presentations.ViewModel;
 
 namespace Mma.Client.Presentations;
 
-public partial class ReservationViewModel : ObservableObject, IReservationViewModel
+/**
+ * <summary>
+ * Represents a reservation view model.
+ * </summary>
+ */
+public partial class ReservationViewModel(IReservationStatusViewModel statusViewModel, IReservationRequestViewModel reservationRequestViewModel, ReservationService reservationService,
+    IDataService dataService, Room room) : ObservableObject, IReservationViewModel
 {
-    private readonly ReservationService _reservationService;
-
-    private readonly IDataService _dataService;
-
-    private readonly Room _room;
-
-    public ReservationViewModel(IReservationStatusViewModel statusViewModelViewModel, ReservationService reservationService,
-        IDataService dataService, Room room)
-    {
-        ReservationStatusViewModel = statusViewModelViewModel;
-        _reservationService = reservationService;
-        _dataService = dataService;
-        _room = room;
-        AddReservation = new RelayCommand(OnAddReservation);
-    }
-
     [ObservableProperty]
-    private string _matricule = string.Empty;
+    private IReservationRequestViewModel _reservationRequestViewModel = reservationRequestViewModel;
 
-    [ObservableProperty]
-    private string _date = DateTime.Now.ToString("yyyy-MM-dd");
+    public ICommand AddReservation => new RelayCommand(OnAddReservation);
 
-    [ObservableProperty]
-    private string _timeStart = DateTime.Now.ToString("HH:mm");
-
-    [ObservableProperty]
-    private string _timeEnd = DateTime.Now.AddHours(1).ToString("HH:mm");
-
-    [ObservableProperty]
-    private string _description = string.Empty;
-
-    [ObservableProperty]
-    private int _numberOfPeople = 1;
-
-    public IRelayCommand AddReservation { get; }
-
+    [RelayCommand]
     private void OnAddReservation()
     {
-        var date = DateTime.Parse(Date);
-        var timeStart = DateTime.Parse(TimeStart);
-        var timeEnd = DateTime.Parse(TimeEnd);
-        var request = new ReservationRequest(Matricule, date, timeStart, timeEnd, NumberOfPeople, Description);
-        var reservations = _dataService.FindReservations(date, _room.Id);
-        var reservationStatus = _reservationService.Reserve(request, reservations);
+        var date = DateTime.Parse(ReservationRequestViewModel.DateTimeReservationRequestViewModel.Date);
+        var timeStart = DateTime.Parse(ReservationRequestViewModel.DateTimeReservationRequestViewModel.TimeStart);
+        var timeEnd = DateTime.Parse(ReservationRequestViewModel.DateTimeReservationRequestViewModel.TimeEnd);
+        var request = new ReservationRequest(ReservationRequestViewModel.Description, date, timeStart, timeEnd,
+            ReservationRequestViewModel.NumberOfPeople, ReservationRequestViewModel.Description,
+            ReservationRequestViewModel.ReservationServicesViewModel.SelectedServices);
+        var reservations = dataService.FindReservations(date, room.Id);
+        var reservationStatus = reservationService.Reserve(request, reservations);
 
         ReservationStatusViewModel = new ReservationStatusViewModel(reservationStatus);
 
         if (reservationStatus == ReservationStatus.Accepted)
         {
-            _dataService.AddReservation(request);
+            dataService.AddReservation(request, room.Id);
         }
     }
 
     [ObservableProperty]
-    private IReservationStatusViewModel _reservationStatusViewModel = new ReservationStatusViewModel(ReservationStatus.None);
+    private IReservationStatusViewModel _reservationStatusViewModel = statusViewModel;
 }

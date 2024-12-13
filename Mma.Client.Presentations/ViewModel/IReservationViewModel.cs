@@ -1,23 +1,12 @@
-using CommunityToolkit.Mvvm.Input;
+using System.Windows.Input;
 
 namespace Mma.Client.Presentations.ViewModel;
 
 public interface IReservationViewModel
 {
-    public string Matricule { get; set; }
-
-    public string Date { get; set; }
-
-    public string TimeStart { get; set; }
-
-    public string TimeEnd { get; set; }
-
-    public string Description { get; set; }
-
-    public int NumberOfPeople { get; set; }
-
-    public IRelayCommand AddReservation { get; }
+    public IReservationRequestViewModel ReservationRequestViewModel { get; set; }
 
     public IReservationStatusViewModel ReservationStatusViewModel { get; set; }
 
+    public ICommand AddReservation { get; }
 }

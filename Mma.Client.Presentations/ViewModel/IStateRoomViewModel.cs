@@ -8,9 +8,7 @@ public interface IStateRoomViewModel
 
     public string TimeCurentSlot { get; set; }
 
-    public string NameActualReservation { get; set; }
-
-    public string TimeActualReservation { get; set; }
+    public IActualStateRoomViewModel ActualStateRoomViewModel { get; set; }
 
     public string TimeNextReservation { get; set; }
 }

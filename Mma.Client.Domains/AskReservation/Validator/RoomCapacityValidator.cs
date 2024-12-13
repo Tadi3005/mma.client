@@ -2,5 +2,6 @@
 
 public class RoomCapacityValidator : IReservationValidator
 {
-    public ReservationStatus Validate(ReservationRequest request, IList<Reservation> reservations, IList<User> users, Room room) => room.Capacity < request.NumberOfPeople ? ReservationStatus.RoomCapacityExceeded : ReservationStatus.Accepted;
+    public ReservationStatus Validate(ReservationRequest request, IList<Reservation> reservations, IList<User> users, Room room)
+        => room.HasEnoughCapacity(request.NumberOfPeople) ? ReservationStatus.Accepted : ReservationStatus.RoomCapacityExceeded;
 }

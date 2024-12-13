@@ -11,7 +11,8 @@ namespace Mma.Client.Presentations;
  * Represents a daily schedule view model.
  * </summary>
  */
-public partial class DailyScheduleViewModel(IList<ISlotViewModel> slotViewModels, ScheduleService dailyScheduleService, Room room, IDataService service) : ObservableObject, IDailyScheduleViewModel
+public partial class DailyScheduleViewModel(IList<ISlotViewModel> slotViewModels, ScheduleService dailyScheduleService,
+    Room room, IDataService dataService) : ObservableObject, IDailyScheduleViewModel
 {
     [ObservableProperty]
     private string _selectedDate = DateTime.Now.ToString("yyyy-MM-dd");
@@ -21,10 +22,10 @@ public partial class DailyScheduleViewModel(IList<ISlotViewModel> slotViewModels
 
     partial void OnSelectedDateChanged(string value)
     {
-        DateTime selectedDate = DateTime.Parse(value);
-        IList<Reservation> reservations = service.FindReservations(selectedDate, room.Id);
+        var date = DateTime.Parse(value);
+        var reservations = dataService.FindReservations(date, room.Id);
 
-        var dailySchedule = dailyScheduleService.CreateSchedule(selectedDate, reservations);
+        var dailySchedule = dailyScheduleService.CreateSchedule(date, reservations);
 
         var updatedSlotViewModels = dailySchedule.Slots.Select(slot =>
             new SlotViewModel(slot)).ToList();

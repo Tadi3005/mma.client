@@ -4,6 +4,11 @@ using Mma.Client.Presentations.ViewModel;
 
 namespace Mma.Client.Presentations;
 
+/**
+ * <summary>
+ * Represents a reservation status view model.
+ * </summary>
+ */
 public partial class ReservationStatusViewModel(ReservationStatus status) : ObservableObject, IReservationStatusViewModel
 {
     [ObservableProperty]

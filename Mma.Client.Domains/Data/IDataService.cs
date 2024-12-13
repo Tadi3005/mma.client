@@ -8,5 +8,5 @@ public interface IDataService
 
     IList<Reservation> FindReservations(DateTime date, string roomId);
 
-    void AddReservation(ReservationRequest request);
+    void AddReservation(ReservationRequest request, string roomId);
 }
