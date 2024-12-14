@@ -9,4 +9,6 @@ public interface IReservationViewModel
     public IReservationStatusViewModel ReservationStatusViewModel { get; set; }
 
     public ICommand AddReservation { get; }
+
+    public string RoomReservation { get; }
 }

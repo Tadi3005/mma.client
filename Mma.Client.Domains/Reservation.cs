@@ -8,7 +8,7 @@ public record Reservation(DateTime Date, DateTime Start, DateTime End, string Su
 
     public bool Overlaps(ReservationRequest request)
     {
-        if (Date.Date != request.Date.Date)
+        if (Date.Date != request.RequestDate.Date)
         {
             return false;
         }

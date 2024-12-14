@@ -20,6 +20,7 @@ public partial class ReservationViewModel(IReservationStatusViewModel statusView
     private IReservationRequestViewModel _reservationRequestViewModel = reservationRequestViewModel;
 
     public ICommand AddReservation => new RelayCommand(OnAddReservation);
+    public string RoomReservation => "Réservation pour la salle " + room.Id;
 
     [RelayCommand]
     private void OnAddReservation()
@@ -27,7 +28,6 @@ public partial class ReservationViewModel(IReservationStatusViewModel statusView
         var date = DateTime.Parse(ReservationRequestViewModel.DateTimeReservationRequestViewModel.Date);
         var timeStart = DateTime.Parse(ReservationRequestViewModel.DateTimeReservationRequestViewModel.TimeStart);
         var timeEnd = DateTime.Parse(ReservationRequestViewModel.DateTimeReservationRequestViewModel.TimeEnd);
-
         var services = ReservationRequestViewModel.ReservationServicesViewModel.SelectedServices;
         var request = new ReservationRequest(ReservationRequestViewModel.Matricule, date, timeStart, timeEnd,
             ReservationRequestViewModel.NumberOfPeople, ReservationRequestViewModel.Description,

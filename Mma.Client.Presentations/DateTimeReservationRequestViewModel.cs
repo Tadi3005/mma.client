@@ -11,7 +11,7 @@ namespace Mma.Client.Presentations;
 public partial class DateTimeReservationRequestViewModel : ObservableObject, IDateTimeReservationRequestViewModel
 {
     [ObservableProperty]
-    private string _date = DateTime.Now.ToString("yyyy-MM-dd");
+    private string _date = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
 
     [ObservableProperty]
     private string _timeStart = DateTime.Now.ToString("HH:mm");

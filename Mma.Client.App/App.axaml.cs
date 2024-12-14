@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -59,7 +58,7 @@ public class App : Application
                         // Services
                         _factory = new SqlDataStorageFactory(connectionString, provider, MySqlClientFactory.Instance);
                         var service = new SqlService(_factory.CreateDataStorage());
-                        var openingHours = new OpeningHours(new TimeSpan(8, 0, 0), new TimeSpan(18, 0, 0));
+                        var openingHours = new OpeningHours(new TimeSpan(8, 0, 0), new TimeSpan(17, 0, 0));
                         var room = service.FindRoomById(options.RoomId);
                         var users = service.FindAllUsers();
                         var reservations = service.FindReservations(DateTime.Now, options.RoomId);
@@ -77,7 +76,6 @@ public class App : Application
                                     new OutsideOpeningHoursValidator(openingHours),
                                     new PastDateValidator(),
                                     new HoursExactlyValidator(),
-                                    new DescriptionValidator()
                                 }, users, room);
 
                         // ViewModel
