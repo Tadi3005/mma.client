@@ -1,21 +1,19 @@
 using System.Data;
-using System.Data.Common;
 using Mma.Client.Domains;
-using Mma.Client.Domains.Data.Dao;
 using Mma.Client.Infrastructures.Dto.Sql;
 using Mma.Client.Infrastructures.Mapper;
 using Serilog;
 
 namespace Mma.Client.Infrastructures.Sql.Dao;
 
-public class SqlUserDao(DbConnection connection, SqlUserMapper mapper, ILogger logger) : IUserDao
+public class SqlUserDao(IDbConnection connection, SqlUserMapper mapper, ILogger logger) : IUserDao
 {
     public IList<User> FindAll()
     {
         try
         {
             var users = new List<User>();
-            using IDbCommand command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.CommandText = "SELECT * FROM member";
 
             using var reader = command.ExecuteReader();

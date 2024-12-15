@@ -1,5 +1,4 @@
 using System.Data.Common;
-using Mma.Client.Domains.Data;
 using Serilog;
 
 namespace Mma.Client.Infrastructures.Sql;

@@ -1,6 +1,7 @@
+﻿using Mma.Client.Domains;
 using Mma.Client.Domains.AskReservation;
 
-namespace Mma.Client.Domains.Data.Dao;
+namespace Mma.Client.Infrastructures;
 
 public interface ICalendarDao
 {
@@ -8,9 +9,9 @@ public interface ICalendarDao
 
     void Add(ReservationRequest request, string idRoom);
 
+    string GetLastInsertedId();
+
     void Add(string idService, string idReservation);
 
     IList<Service> FindAll();
-
-    string GetLastInsertedId();
 }

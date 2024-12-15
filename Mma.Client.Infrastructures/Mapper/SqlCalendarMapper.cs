@@ -3,7 +3,7 @@ using Mma.Client.Infrastructures.Dto.Sql;
 
 namespace Mma.Client.Infrastructures.Mapper;
 
-public class SqlCalendarMapper
+public class SqlCalendarMapper : ISqlCalendarMapper
 {
     public Reservation Map(SqlReservationDto dto)
     {
@@ -13,12 +13,14 @@ public class SqlCalendarMapper
         }
 
         var date = DateTime.Parse(dto.Date);
-        var start = TimeSpan.Parse(dto.Start);
-        var end = TimeSpan.Parse(dto.End);
+        var startWithoutDate = DateTime.Parse(dto.Start);
+        var endWithourDate = DateTime.Parse(dto.End);
+        var start = date.AddHours(startWithoutDate.Hour).AddMinutes(startWithoutDate.Minute);
+        var end = date.AddHours(endWithourDate.Hour).AddMinutes(endWithourDate.Minute);
         return new Reservation(
             date,
-            date + start,
-            date + end,
+            start,
+            end,
             dto.Summary,
             dto.Description,
             new Room(dto.Room.Id, dto.Room.Name, dto.Room.Capacity),

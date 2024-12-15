@@ -12,9 +12,9 @@ namespace Mma.Client.Presentations;
 public partial class ActualStateRoomViewModel(RoomState roomState) : ObservableObject, IActualStateRoomViewModel
 {
     [ObservableProperty]
-    private string _nameActualReservation = roomState.ActualReservation == Reservation.Empty ? string.Empty
-        : $"de {roomState.ActualReservation.Start:HH:mm} à {roomState.ActualReservation.End:HH:mm}";
+    private string _nameActualReservation = roomState.ActualReservation == Reservation.Empty ? "Aucun événement en cours" : roomState.ActualReservation.Summary;
 
     [ObservableProperty]
-    private string _timeActualReservation = roomState.ActualReservation == Reservation.Empty ? "Aucun événement en cours" : roomState.ActualReservation.Summary;
+    private string _timeActualReservation = roomState.ActualReservation == Reservation.Empty ? string.Empty
+        : $"de {roomState.ActualReservation.Start:HH:mm} à {roomState.ActualReservation.End:HH:mm}";
 }

@@ -24,10 +24,10 @@ public class SqlService(IDataStorage dataStorage) : IDataService
 
             dataStorage.CommitTransaction(transaction);
         }
-        catch (Exception)
+        catch (Exception e)
         {
             dataStorage.RollbackTransaction(transaction);
-            throw new InvalidOperationException("Error while adding reservation");
+            throw new InvalidOperationException("Error while adding reservation", e);
         }
     }
 

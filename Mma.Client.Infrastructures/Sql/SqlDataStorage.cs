@@ -1,13 +1,11 @@
-using System.Data.Common;
-using Mma.Client.Domains.Data;
-using Mma.Client.Domains.Data.Dao;
+using System.Data;
 using Mma.Client.Infrastructures.Mapper;
 using Mma.Client.Infrastructures.Sql.Dao;
 using Serilog;
 
 namespace Mma.Client.Infrastructures.Sql;
 
-public class SqlDataStorage(DbConnection connection, ILogger logger) : IDataStorage
+public class SqlDataStorage(IDbConnection connection, ILogger logger) : IDataStorage
 {
     public IRoomDao RoomDao => new SqlRoomDao(connection, new SqlRoomMapper(), logger);
 
@@ -15,9 +13,9 @@ public class SqlDataStorage(DbConnection connection, ILogger logger) : IDataStor
 
     public IUserDao UserDao => new SqlUserDao(connection, new SqlUserMapper(), logger);
 
-    public DbTransaction BeginTransaction() => connection.BeginTransaction();
+    public IDbTransaction BeginTransaction() => connection.BeginTransaction();
 
-    public void CommitTransaction(DbTransaction transaction) => transaction.Commit();
+    public void CommitTransaction(IDbTransaction transaction) => transaction.Commit();
 
-    public void RollbackTransaction(DbTransaction transaction) => transaction.Rollback();
+    public void RollbackTransaction(IDbTransaction transaction) => transaction.Rollback();
 }

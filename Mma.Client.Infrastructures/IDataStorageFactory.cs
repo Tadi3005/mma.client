@@ -1,4 +1,6 @@
-namespace Mma.Client.Domains.Data;
+using Mma.Client.Domains.Data;
+
+namespace Mma.Client.Infrastructures;
 
 public interface IDataStorageFactory
 {

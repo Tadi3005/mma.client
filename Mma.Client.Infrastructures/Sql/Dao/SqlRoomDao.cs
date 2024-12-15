@@ -1,20 +1,18 @@
 using System.Data;
-using System.Data.Common;
 using Mma.Client.Domains;
-using Mma.Client.Domains.Data.Dao;
 using Mma.Client.Infrastructures.Dto.Sql;
 using Mma.Client.Infrastructures.Mapper;
 using Serilog;
 
 namespace Mma.Client.Infrastructures.Sql.Dao;
 
-public class SqlRoomDao(DbConnection connection, SqlRoomMapper mapper, ILogger logger) : IRoomDao
+public class SqlRoomDao(IDbConnection connection, SqlRoomMapper mapper, ILogger logger) : IRoomDao
 {
     public Room FindById(string roomId)
     {
         try
         {
-            using IDbCommand command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.CommandText = "SELECT * FROM room WHERE id = @id";
             var idParameter = command.CreateParameter();
             idParameter.ParameterName = "@id";
@@ -37,7 +35,7 @@ public class SqlRoomDao(DbConnection connection, SqlRoomMapper mapper, ILogger l
         catch (Exception e)
         {
             logger.Error(e, "Error while finding room by id");
-            throw new Exception("Error while finding room by id", e);
+            throw new InvalidOperationException("Error while finding room by id", e);
         }
     }
 }

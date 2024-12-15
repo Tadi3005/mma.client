@@ -1,14 +1,14 @@
+using System.Data;
 using System.Data.Common;
 using Mma.Client.Domains;
 using Mma.Client.Domains.AskReservation;
-using Mma.Client.Domains.Data.Dao;
 using Mma.Client.Infrastructures.Dto.Sql;
 using Mma.Client.Infrastructures.Mapper;
 using Serilog;
 
 namespace Mma.Client.Infrastructures.Sql.Dao;
 
-public class SqlCalendarDao(DbConnection connection, SqlCalendarMapper calendarMapper, ILogger logger) : ICalendarDao
+public class SqlCalendarDao(IDbConnection connection, ISqlCalendarMapper calendarMapper, ILogger logger) : ICalendarDao
 {
     public IList<Reservation> FindByRoomIdAndDate(DateTime date, string roomId)
     {
@@ -22,9 +22,9 @@ public class SqlCalendarDao(DbConnection connection, SqlCalendarMapper calendarM
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                var dto = new SqlReservationDto((int)reader["id_reservation"], reader.GetValue(reader.GetOrdinal("date")).ToString(),
+                var dto = new SqlReservationDto(Convert.ToInt32(reader["id_reservation"]), reader.GetValue(reader.GetOrdinal("date")).ToString(),
                     reader.GetValue(reader.GetOrdinal("time_start")).ToString(), reader.GetValue(reader.GetOrdinal("time_end")).ToString(), (string)reader["summary"], (string)reader["description"],
-                    new SqlRoomDto((string)reader["id"], (string)reader["name"], (int)reader["capacity"]),
+                    new SqlRoomDto((string)reader["id"], (string)reader["name"], Convert.ToInt32(reader["capacity"])),
                     new SqlUserDto((string)reader["matricule"], (string)reader["fullname"], (string)reader["email"]));
                 var reservation = calendarMapper.Map(dto);
                 reservations.Add(reservation);
@@ -66,15 +66,29 @@ public class SqlCalendarDao(DbConnection connection, SqlCalendarMapper calendarM
         try
         {
             using var command = connection.CreateCommand();
-            command.CommandText = "SELECT LAST_INSERT_ID()";
-            return command.ExecuteScalar()?.ToString() ?? throw new InvalidOperationException();
+
+            if (connection.GetType().Name.Contains("SQLite"))
+            {
+                command.CommandText = "SELECT last_insert_rowid()";  // Correct pour SQLite
+            }
+            else if (connection.GetType().Name.Contains("MySql"))
+            {
+                command.CommandText = "SELECT LAST_INSERT_ID()";  // Correct pour MySQL
+            }
+            else
+            {
+                throw new InvalidOperationException("Unsupported database type");
+            }
+
+            return command.ExecuteScalar()?.ToString() ?? throw new InvalidOperationException("No last inserted ID found");
         }
         catch (Exception e)
         {
-            logger.Error("Error while getting last inserted id");
+            logger.Error("Error while getting last inserted id", e);
             throw new InvalidOperationException("Error while getting last inserted id", e);
         }
     }
+
 
     public void Add(string idService, string idReservation)
     {
@@ -104,7 +118,7 @@ public class SqlCalendarDao(DbConnection connection, SqlCalendarMapper calendarM
             using var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                var dto = new SqlServiceDto((int)reader["id"], (string)reader["name"]);
+                var dto = new SqlServiceDto(Convert.ToInt32(reader["id"]), (string)reader["name"]);
                 var service = calendarMapper.MapService(dto);
                 services.Add(service);
             }
@@ -118,7 +132,7 @@ public class SqlCalendarDao(DbConnection connection, SqlCalendarMapper calendarM
         }
     }
 
-    private void AddSqlParameter(DbCommand command, string parameterName, object value)
+    private void AddSqlParameter(IDbCommand command, string parameterName, object value)
     {
         var parameter = command.CreateParameter();
         parameter.ParameterName = parameterName;
