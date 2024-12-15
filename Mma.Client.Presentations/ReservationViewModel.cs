@@ -13,7 +13,7 @@ namespace Mma.Client.Presentations;
  * Represents a reservation view model.
  * </summary>
  */
-public partial class ReservationViewModel(IReservationStatusViewModel statusViewModel, IReservationRequestViewModel reservationRequestViewModel, ReservationService reservationService,
+public partial class ReservationViewModel(IReservationStatusViewModel statusViewModel, IReservationRequestViewModel reservationRequestViewModel, IReservationService reservationService,
     IDataService dataService, Room room) : ObservableObject, IReservationViewModel
 {
     [ObservableProperty]

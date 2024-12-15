@@ -27,12 +27,13 @@ public class MainViewModelTests
     }
 
     [Test]
-    public void ShouldInitializeViewModelsCorrectly()
-    {
-        Assert.That(_mainViewModel.DailyScheduleViewModel, Is.EqualTo(_dailyScheduleViewModelMock));
-        Assert.That(_mainViewModel.ReservationViewModel, Is.EqualTo(_reservationViewModelMock));
-        Assert.That(_mainViewModel.StateRoomViewModel, Is.EqualTo(_stateRoomViewModelMock));
-    }
+    public void ShouldInitializeViewModelsCorrectly() =>
+        Assert.Multiple(() =>
+        {
+            Assert.That(_mainViewModel.DailyScheduleViewModel, Is.EqualTo(_dailyScheduleViewModelMock));
+            Assert.That(_mainViewModel.ReservationViewModel, Is.EqualTo(_reservationViewModelMock));
+            Assert.That(_mainViewModel.StateRoomViewModel, Is.EqualTo(_stateRoomViewModelMock));
+        });
 
     [Test]
     public void StateRoomViewModel_ShouldBeSetCorrectly()
@@ -45,5 +46,37 @@ public class MainViewModelTests
 
         // Assert
         Assert.That(_mainViewModel.StateRoomViewModel, Is.EqualTo(newStateRoomViewModel));
+    }
+
+    [Test]
+    public void StateRoomViewModel_ShouldRaisePropertyChangedEvent()
+    {
+        // Arrange
+        var eventRaised = false;
+        _mainViewModel.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName == nameof(_mainViewModel.StateRoomViewModel))
+            {
+                eventRaised = true;
+            }
+        };
+
+        // Act
+        _mainViewModel.StateRoomViewModel = Substitute.For<IStateRoomViewModel>();
+
+        // Assert
+        Assert.That(eventRaised, Is.True);
+    }
+
+    [Test]
+    public void DailyScheduleViewModel_ShouldBeSetCorrectly()
+    {
+        // Arrange
+        var newDailyScheduleViewModel = Substitute.For<IDailyScheduleViewModel>();
+        var mainViewModel = new MainViewModel(_stateRoomViewModelMock, newDailyScheduleViewModel, _reservationViewModelMock);
+
+
+        // Assert
+        Assert.That(mainViewModel.DailyScheduleViewModel, Is.EqualTo(newDailyScheduleViewModel));
     }
 }

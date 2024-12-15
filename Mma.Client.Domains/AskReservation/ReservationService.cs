@@ -1,6 +1,6 @@
 namespace Mma.Client.Domains.AskReservation;
 
-public class ReservationService(IList<IReservationValidator> validators, IList<User> users, Room room)
+public class ReservationService(IList<IReservationValidator> validators, IList<User> users, Room room) : IReservationService
 {
     public ReservationStatus Reserve(ReservationRequest reservation, IList<Reservation> events)
     {

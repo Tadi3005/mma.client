@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Data.Common;
 using Mma.Client.Infrastructures.Mapper;
 using Mma.Client.Infrastructures.Sql.Dao;
 using NSubstitute;

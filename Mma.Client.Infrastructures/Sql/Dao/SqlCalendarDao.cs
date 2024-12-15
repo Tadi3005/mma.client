@@ -1,5 +1,4 @@
 using System.Data;
-using System.Data.Common;
 using Mma.Client.Domains;
 using Mma.Client.Domains.AskReservation;
 using Mma.Client.Infrastructures.Dto.Sql;
@@ -84,11 +83,10 @@ public class SqlCalendarDao(IDbConnection connection, ISqlCalendarMapper calenda
         }
         catch (Exception e)
         {
-            logger.Error("Error while getting last inserted id", e);
+            logger.Error("Error while getting last inserted id");
             throw new InvalidOperationException("Error while getting last inserted id", e);
         }
     }
-
 
     public void Add(string idService, string idReservation)
     {
